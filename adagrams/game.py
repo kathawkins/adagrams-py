@@ -50,7 +50,6 @@ def uses_available_letters(word, letter_bank):
             hand_dict[lowercase_hand_letter] += 1
         else:
             hand_dict[lowercase_hand_letter] = 1
-    print("function's hand dict", hand_dict)
 
     #Checks validity of user's word letters against the counter dictionary
     for player_letter in players_letters_list:
@@ -83,25 +82,25 @@ def score_word(word):
 def get_highest_word_score(word_list):
     pass
     #Create an empty dictionary to add words and scores to later
-    #Create an empty list for words with the highest score
-    #Create an empty list for letter counts of words with the highest score
+    #Create an empty list for words with the max score
+    #Create an empty list for letter counts of words with the max score
     
     #Create a for loop through the word_list
-    #In the loop, add each word as the dictionary keys and use the score_word function to add each score as the dictionary values
-    
-    #Create another for loop through the dictionary values
-    #In the loop, save the max score to a variable
-    
-    #Create another for loop through the word_list
-    #In the loop, append all words that have a value equal to the highest score to the list
-    #Also in the loop, append the letter count of all words that have a value equal to the highest score to the list
+    #Create an empty variable for the max score
+    #In the loop, use the score_word() function from wave 3 to save the current score to a variable
+    #Also in the loop, add each word as the dictionary keys and add the score variable as the dictionary values
+    #Also in the loop, use conditional to determine if the current score is higher than the previous
+        #If it is, assign it to the max score variable
+    #Also in the loop, use a conditional to 
+        #(1) append all words that have a dictionary value equal to the max score to the list
+        #and (2) append the letter count of all words that have a dictionary value equal to the max score to the list
     
     #Save the minimum letter count from the letter count list to a variable
     
-    #Create another for loop through the letter counts with the max score
+    #Create another for loop through the enumerate object letter counts of words with the max score
     #In the loop, use a conditional to determine if the letter count is 10
-    #If the letter count is 10, return a tuple of the word at the same index from the list of words with the highest score and the high score
-    #Also in the loop, use a conditional to determine if the letter count is equal to the minimum letter count
-    #If the letter count is equal to the minimum count, return a tuple of the word at the same index from the list of words with the highest score and the high score
+        #If it is, return a tuple of (1) the word at the enumerate object index from the list of words with the max score and (2) the high score
+    #Use another conditional to determine if the letter count is equal to the minimum letter count
+        #If it is, return a tuple of (1) the word at the enumerate object index from the list of words with the max score and (2) the high score
 
 
