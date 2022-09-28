@@ -80,7 +80,37 @@ def score_word(word):
     return players_word_score
 
 def get_highest_word_score(word_list):
-    pass
+    max_words=[]
+    letter_counts = []
+    winner_word = ""
+    max_score = score_word(word_list[0])
+    
+    # compares current score against previous score and append it to the list
+    for word in word_list:
+        current_score = score_word(word)
+        if current_score > max_score:
+            max_score = current_score
+            max_words = [word]
+            letter_counts = [len(word)]
+        elif current_score == max_score:
+            max_words.append(word)
+            letter_counts.append(len(word))
+
+    min_letter_count = min(letter_counts)
+    
+    # checks if letter count equals to 10
+    for index,lett_count in enumerate(letter_counts):
+        if lett_count == 10:
+            winner_word = max_words[index]
+            return winner_word, max_score
+        
+    # checks if letter count equals to the minimum letter count
+    for index,lett_count in enumerate(letter_counts):
+        if lett_count == min_letter_count:
+            winner_word = max_words[index]
+            return winner_word, max_score
+
+    
     #Create an empty dictionary to add words and scores to later
     #Create an empty list for words with the max score
     #Create an empty list for letter counts of words with the max score
