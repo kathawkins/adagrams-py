@@ -1,31 +1,31 @@
 import random
 LETTER_POOL = list("A"*9 + "B"*2 + "C"*2 + "D"*4 + "E"*12 + "F"*2 + "G"*3 + "H"*2 + "I"*9 + "J"*1 + "K"*1 + "L"*4 + "M"*2 + "N"*6 + "O"*8 + "P"*2 + "Q"*1 + "R"*6 + "S"*4 + "T"*6 + "U"*4 + "V"*2 + "W"*2 + "X"*1 + "Y"*2 + "Z"*1)
-SCORE_DICT = { 'a': 1, 
-'b': 3, 
-'c': 3, 
-'d': 2, 
-'e': 1, 
-'f': 4, 
-'g': 2,  
-'h': 4, 
-'i': 1, 
-'j': 8, 
-'k': 5, 
-'l': 1, 
-'m': 3, 
-'n': 1, 
-'o': 1, 
-'p': 3, 
-'q': 10, 
-'r': 1, 
-'s': 1,
-'t': 1, 
-'u': 1, 
-'v': 4, 
-'w': 4, 
-'x': 8, 
-'y': 4, 
-'z': 10}
+SCORE_DICT = { 'A': 1, 
+'B': 3, 
+'C': 3, 
+'D': 2, 
+'E': 1, 
+'F': 4, 
+'G': 2,  
+'H': 4, 
+'I': 1, 
+'J': 8, 
+'K': 5, 
+'L': 1, 
+'M': 3, 
+'N': 1, 
+'O': 1, 
+'P': 3, 
+'Q': 10, 
+'R': 1, 
+'S': 1,
+'T': 1, 
+'U': 1, 
+'V': 4, 
+'W': 4, 
+'X': 8, 
+'Y': 4, 
+'Z': 10}
 
 def draw_letters():
     adjusted_letter_pool=LETTER_POOL.copy()
@@ -39,39 +39,49 @@ def draw_letters():
 
     return hand_list
 
+def uppercase_letter_list(letter_bank):
+    hand=[]
+
+    #Converts each letter in the letter bank to uppercase
+    for letter in letter_bank:
+        upper_letter = letter.upper()
+        hand.append(upper_letter)
+
+    return hand
+
 def uses_available_letters(word, letter_bank):
-    players_letters_list = list(word)
+    players_letters_list = list(word.upper())
+    hand = uppercase_letter_list(letter_bank)
     hand_dict = {}
 
     #Generates a counter dictionary for letters in the hand
-    for hand_letter in letter_bank:
-        lowercase_hand_letter = hand_letter.lower()
-        if lowercase_hand_letter in hand_dict:
-            hand_dict[lowercase_hand_letter] += 1
+    for hand_letter in hand:
+        # lowercase_hand_letter = hand_letter.upper()
+        if hand_letter in hand_dict:
+            hand_dict[hand_letter] += 1
         else:
-            hand_dict[lowercase_hand_letter] = 1
+            hand_dict[hand_letter] = 1
 
     #Checks validity of user's word letters against the counter dictionary
     for player_letter in players_letters_list:
-        lowercase_player_letter = player_letter.lower()
-        if lowercase_player_letter not in hand_dict:
+        if player_letter not in hand_dict:
             return False
 
-        if hand_dict[lowercase_player_letter] == 0:
+        if hand_dict[player_letter] == 0:
             return False
         else:
-            hand_dict[lowercase_player_letter] -= 1
+            hand_dict[player_letter] -= 1
     #Assumes a valid word if the function does not return False
     return True
 
 def score_word(word):    
-    players_letters_list=list(word.lower())
+    players_letters_list=list(word.upper())
     letter_count=len(players_letters_list)
     players_word_score = 0
 
     #Adds each letter's points to the word score 
     for player_letter in players_letters_list:
-        players_word_score += SCORE_DICT[player_letter.lower()]
+        players_word_score += SCORE_DICT[player_letter]
     
     #Adds 8 points to the word score if the word is 7 letters or longer
     if letter_count >= 7:
@@ -80,12 +90,14 @@ def score_word(word):
     return players_word_score
 
 def get_highest_word_score(word_list):
-    max_words=[]
+    max_words = []
     letter_counts = []
-    winner_word = ""
+    
+    #assigns an initial max score
     max_score = score_word(word_list[0])
     
-    # compares current score against previous score and append it to the list
+    # compares current score against previously stored max score 
+    # and appends (1) the word and (2) number of letters in the word to lists
     for word in word_list:
         current_score = score_word(word)
         if current_score > max_score:
@@ -98,39 +110,15 @@ def get_highest_word_score(word_list):
 
     min_letter_count = min(letter_counts)
     
-    # checks if letter count equals to 10
+    # checks if letter count equals to 10 and returns the winning tuple
     for index,lett_count in enumerate(letter_counts):
         if lett_count == 10:
             winner_word = max_words[index]
             return winner_word, max_score
         
-    # checks if letter count equals to the minimum letter count
+    # checks if letter count equals to the minimum letter count and returns winning tuple
     for index,lett_count in enumerate(letter_counts):
         if lett_count == min_letter_count:
             winner_word = max_words[index]
             return winner_word, max_score
-
-    
-    #Create an empty dictionary to add words and scores to later
-    #Create an empty list for words with the max score
-    #Create an empty list for letter counts of words with the max score
-    
-    #Create a for loop through the word_list
-    #Create an empty variable for the max score
-    #In the loop, use the score_word() function from wave 3 to save the current score to a variable
-    #Also in the loop, add each word as the dictionary keys and add the score variable as the dictionary values
-    #Also in the loop, use conditional to determine if the current score is higher than the previous
-        #If it is, assign it to the max score variable
-    #Also in the loop, use a conditional to 
-        #(1) append all words that have a dictionary value equal to the max score to the list
-        #and (2) append the letter count of all words that have a dictionary value equal to the max score to the list
-    
-    #Save the minimum letter count from the letter count list to a variable
-    
-    #Create another for loop through the enumerate object letter counts of words with the max score
-    #In the loop, use a conditional to determine if the letter count is 10
-        #If it is, return a tuple of (1) the word at the enumerate object index from the list of words with the max score and (2) the high score
-    #Use another conditional to determine if the letter count is equal to the minimum letter count
-        #If it is, return a tuple of (1) the word at the enumerate object index from the list of words with the max score and (2) the high score
-
 
