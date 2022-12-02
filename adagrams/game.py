@@ -39,86 +39,62 @@ def draw_letters():
 
     return hand_list
 
-def uppercase_letter_list(letter_bank):
-    hand=[]
-
-    #Converts each letter in the letter bank to uppercase
-    for letter in letter_bank:
-        upper_letter = letter.upper()
-        hand.append(upper_letter)
-
-    return hand
-
 def uses_available_letters(word, letter_bank):
-    players_letters_list = list(word.upper())
-    hand = uppercase_letter_list(letter_bank)
+    # hand = [letter.upper() for letter in letter_bank]
     hand_dict = {}
 
     #Generates a counter dictionary for letters in the hand
-    for hand_letter in hand:
-        # lowercase_hand_letter = hand_letter.upper()
+    for hand_letter in letter_bank:
         if hand_letter in hand_dict:
             hand_dict[hand_letter] += 1
         else:
             hand_dict[hand_letter] = 1
 
     #Checks validity of user's word letters against the counter dictionary
-    for player_letter in players_letters_list:
-        if player_letter not in hand_dict:
+    # for player_letter in players_letters_list:
+    for letter in word.upper():
+        if letter not in hand_dict:
             return False
 
-        if hand_dict[player_letter] == 0:
+        if hand_dict[letter] == 0:
             return False
         else:
-            hand_dict[player_letter] -= 1
+            hand_dict[letter] -= 1
     #Assumes a valid word if the function does not return False
     return True
 
 def score_word(word):    
-    players_letters_list=list(word.upper())
-    letter_count=len(players_letters_list)
     players_word_score = 0
 
     #Adds each letter's points to the word score 
-    for player_letter in players_letters_list:
+    for player_letter in word.upper():
         players_word_score += SCORE_DICT[player_letter]
     
     #Adds 8 points to the word score if the word is 7 letters or longer
-    if letter_count >= 7:
+    if len(word) > 6:
         players_word_score += 8
         
     return players_word_score
 
 def get_highest_word_score(word_list):
-    max_words = []
-    letter_counts = []
-    
     #assigns an initial max score
-    max_score = score_word(word_list[0])
+    max_score = 0
     
-    # compares current score against previously stored max score 
-    # and appends (1) the word and (2) number of letters in the word to lists
     for word in word_list:
         current_score = score_word(word)
+        #returns early if a word uses all 10 letters, because there cannot
+        #be a higher scoring word
+        if len(word) == 10:
+            return word, current_score
+
+        # checks if current score is higher than the previously stored max score 
+        # then assigns a new winner and max score if needed
         if current_score > max_score:
             max_score = current_score
-            max_words = [word]
-            letter_counts = [len(word)]
-        elif current_score == max_score:
-            max_words.append(word)
-            letter_counts.append(len(word))
-
-    min_letter_count = min(letter_counts)
-    
-    # checks if letter count equals to 10 and returns the winning tuple
-    for index,lett_count in enumerate(letter_counts):
-        if lett_count == 10:
-            winner_word = max_words[index]
-            return winner_word, max_score
-        
-    # checks if letter count equals to the minimum letter count and returns winning tuple
-    for index,lett_count in enumerate(letter_counts):
-        if lett_count == min_letter_count:
-            winner_word = max_words[index]
-            return winner_word, max_score
-
+            winner_word = word
+        # checks if current score is the same as the max score and if the current 
+        # word has less letters than the previous word then assigns a new winner 
+        # if needed
+        elif current_score == max_score and len(word) < len(winner_word):
+            winner_word = word
+    return winner_word, max_score
